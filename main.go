@@ -18,18 +18,25 @@ var outputPath string = "output/result.csv"
 func main() {
 	files := readDir(dataDir)
 
+	fmt.Println("--START read data dir--")
 	var req []har.Request
 	for _, f := range files {
+		fmt.Printf("--READ %s--\n", f)
 		b := readFile(filepath.Join("data", f))
 		h := har.ReadHar(b)
 		req = append(req, har.FilterRequest(h, origin, priority)...)
+
 	}
+
+	fmt.Println("--FINISH read data dir--")
 
 	sort.SliceStable(req, func(i, j int) bool {
 		return req[i].URL < req[j].URL
 	})
 
+	fmt.Println("--START save csv--")
 	har.SaveRequestAsCSV(req, outputPath)
+	fmt.Println("--FINISH save csv--")
 }
 
 func readDir(path string) []string {

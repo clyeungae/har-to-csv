@@ -56,6 +56,7 @@ func FilterRequest(h Har, origin string, priority string) []Request {
 func SaveRequestAsCSV(rArr []Request, path string) error {
 	file, err := os.Create(path)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
